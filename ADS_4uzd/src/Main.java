@@ -7,6 +7,7 @@ public class Main {
 
     public static final String MAIN_PERSON = "Mike";
     static Map<String, List<String>>  relationships = new HashMap<>();
+    static List<Person> people = new ArrayList<>();
     static Set<String> visited = new HashSet<>();
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -16,7 +17,7 @@ public class Main {
         readFromFile();
 
 
-        System.out.println(hasLoanRequest(MAIN_PERSON));
+        System.out.println(hasLoanRequest(MAIN_PERSON, 110));
 
 
     }
@@ -32,11 +33,16 @@ public class Main {
            List<String> friends = new ArrayList<>();
            String line = scanner.nextLine();
            String[] names = line.split(" ");
-           int i = 1;
+           int i = 2;
            String name = names[0];
+           int money = Integer.parseInt(names[1]) ;
            int length = names.length;
 
-           while (length-1 > 0){
+           Person person = new Person(money,name);
+           people.add(person);
+
+
+           while (length-2 > 0){
 
                friends.add(names[i++]);
                --length;
@@ -52,20 +58,29 @@ public class Main {
     }
 
 
-    private static boolean hasLoanRequest(String person) {
+    private static boolean hasLoanRequest(String person,int amount) {
+
         if (!relationships.containsKey(person)) {
             return false;
         }
+        System.out.println(amount);
+        for (Person p: people){
+            if (p.name.equals(person) ){
+                amount -= p.money;
+            }
+        }
+
         List<String> lenders = relationships.get(person);
 
 
         for (String lender : lenders) {
-            if (lender.equals(MAIN_PERSON)) {
+
+            if (lender.equals(MAIN_PERSON) && amount > 0) {
                 return true;
             } else {
                 if (!visited.contains(lender)) {
                     visited.add(lender);
-                    if (hasLoanRequest(lender)) {
+                    if (hasLoanRequest(lender,amount) ) {
                         return true;
                     }
                 }
