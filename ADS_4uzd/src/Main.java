@@ -17,8 +17,13 @@ public class Main {
         readFromFile();
 
 
-        System.out.println(hasLoanRequest(MAIN_PERSON, 110));
 
+        if (hasLoanRequest(MAIN_PERSON, 111)){
+            System.out.println("Yes, you can receive a request yourself.");
+        }
+        else {
+            System.out.println("No, you cannot receive a request");
+        }
 
     }
 
